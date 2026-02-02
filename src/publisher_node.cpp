@@ -8,37 +8,24 @@
 
 using namespace std::chrono_literals;
 
-/*
- * TODO: Create a Class named 'PublisherNode' that inherits from rclcpp::Node.
- * Requirements:
- * 1. The constructor should name the node "publisher_node".
- * 2. Create a publisher to topic "/counter" with message type std_msgs::msg::String.
- * 3. Create a timer that triggers every 500ms.
- * 4. The timer callback should:
- *    - Increment a counter (starting from 0)
- *    - Create a message with format "Count: X" where X is the counter
- *    - Publish the message
- *    - Log using RCLCPP_INFO: "Publishing: 'Count: X'"
- */
-
 class PublisherNode : public rclcpp::Node
 {
 public:
   PublisherNode() : Node("publisher_node"), count_(0)
   {
     publisher_ = this->create_publisher<std_msgs::msg::String>(
-      "chatter", 10);
+      "/counter", 10);
 
     timer_ = this->create_wall_timer(
-      std::chrono::seconds(1),
+      500ms,
       std::bind(&PublisherNode::timer_callback, this));
   }
 
 private:
   void timer_callback()
   {
-    auto message = std_msgs::msg::String();
-    message.data = "Hello ROS 2! Count: " + std::to_string(count_++);
+    std_msgs::msg::String message;
+    message.data = "Count: " + std::to_string(count_++);
 
     RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
     publisher_->publish(message);
@@ -51,8 +38,8 @@ private:
 
 int main(int argc, char *argv[])
 {
-    rclcpp::init(argc, argv);
-    rclcpp::spin(std::make_shared<PublisherNode>());
-    rclcpp::shutdown();
-    return 0;
+  rclcpp::init(argc, argv);
+  rclcpp::spin(std::make_shared<PublisherNode>());
+  rclcpp::shutdown();
+  return 0;
 }
