@@ -10,10 +10,8 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
-# TODO: Add the executable target named 'publisher_node'
-# 1. Add executable using src/publisher_node.cpp
-# 2. Add dependencies (ament_target_dependencies) for rclcpp and std_msgs
-# 3. Install the target to the DESTINATION lib/${PROJECT_NAME}
+<depend>rclcpp</depend>
+<depend>std_msgs</depend>
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
